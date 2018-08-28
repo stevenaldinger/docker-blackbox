@@ -1,0 +1,21 @@
+version: '3'
+services:
+  blackbox:
+    container_name: blackbox
+    hostname: blackbox
+    image: stevenaldinger/docker-blackbox:latest
+    command: ['tail', '-f', '/dev/null']
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      GIT_USER_EMAIL: "${GIT_USER_EMAIL}"
+      GIT_USER_NAME: "${GIT_USER_NAME}"
+      GNUPGHOME: "/root/.gnupg"
+      BLACKBOXDATA: ".blackbox"
+    volumes:
+    # where './example-repo' would lead to your git repo
+    - ./example-repo:/repo
+    - ${HOME}/.ssh:/root/.ssh
+    - ${HOME}/.gnupg:/root/.gnupg
